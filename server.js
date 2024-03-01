@@ -1,3 +1,7 @@
+// Description: This code sets up a Express web server that listens for GET requests.
+// When a request is made, the server reads content from a file and creates the number
+// of copies of that file. 
+
 // Import the express framework
 var express = require('express');
 // import fs framework
