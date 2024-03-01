@@ -6,28 +6,23 @@ var fs = require('fs');
 // Create an instance of the express app
 app = express();
 
+// Express: GET method 
 app.get('/:numCopies', function(req, resp){
 
     // access numCopies w/ 'req.params'
-    var numCopies = parseInt(req.params.numCopies);
+    const numCopies = parseInt(req.params.numCopies);
 
-    // call copyFile function
-    copyFile(numCopies);
-
-    // send # of copies made on screen
-    resp.send('Number of copies ${numCopies}')
-    });
-
-     // function that takes # of copies as parameter
-     function copyFile(numCopies) {
-        var contents = fs.readFileSync("original.txt", "utf8");
-        // loop to create new files w/ contents of original.txt
-        console.log("--copyFile function ran--");
-        for (let i = 0; i < numCopies; i++) {
-            fs.writeFileSync('copy_${i}.txt', contents);
-            console.log("--for loop inside fucntion ran--");
+    // read the file
+    fs.readFile('original.txt', 'utf8', function(err, data) {
+        // loop to create copies
+        for(let i = 0; i < numCopies; i++) {
+            const fileName = `copy_${i + 1}.txt`;
+            fs.writeFile(fileName, data, () => console.log(`File ${fileName} created.`));
         }
-    }
+        // display the # of copies
+        resp.send(`Number of copies: ${numCopies}`);
+    });
+});
 
 // listen to port 3000
 app.listen(3000);
